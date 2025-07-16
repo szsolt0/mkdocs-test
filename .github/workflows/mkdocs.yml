@@ -9,10 +9,15 @@ on:
       - 'mkdocs.yml'
   workflow_dispatch:
 
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -26,18 +31,19 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install dependencies
+      - name: Install MkDocs
         run: |
           pip install mkdocs
-          pip install mkdocs-material
+          pip install mkdocs-literate-nav
+          pip install mkdocs-enumerate-headings-plugin
 
-      - name: Build MkDocs site
+      - name: Build with MkDocs
         run: mkdocs build
 
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./site
+          path: './site'
 
   deploy:
     needs: build
@@ -45,7 +51,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
