@@ -21,7 +21,19 @@ theme:
   name: material
   features:
     - navigation.tabs
-    #- navigation.numbered
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
 
 markdown_extensions:
   - toc:
